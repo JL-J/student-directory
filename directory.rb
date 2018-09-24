@@ -1,23 +1,32 @@
 # array of students
 
 def input_students
-    puts "Please enter the names of the student."
-    puts "To finish, hit return twice"
-    # create an empty array
-    students = []
+  # create an empty array
+  students = []
+  answer = "Y"
+  until answer != "Y"
+    puts "Please enter the name of the student and then press enter."
     name = gets.chomp
-    # while the name is not empty repeat this code
-    while !name.empty? do
-        # add the student hash to the array
-        students << {name: name, cohort: :november}
-        puts "Now we have #{students.count} students"
-        # get another name from the user
-        name = gets.chomp
-    end
+    puts "Please enter their cohort"
+    cohort = gets.chomp.downcase
+      if cohort == ""
+        cohort = :may
+      end
+    puts "How old are they?"
+    age = gets.chomp
+      if age == ""
+        age = "99"
+      end
+    # add the student hash to the array
+    students << {name: name, cohort: cohort.to_sym, age: age}
+    puts "Now we have #{students.count} students"
+    # get another name from the user
+    puts "Do you want to add another student? (Y/N)"
+    answer = gets.chomp.upcase
+  end
     # return the array of students
     students 
 end
-
 def print_header
     puts "The students of Villains Academy"
     puts "--------------------------------"
