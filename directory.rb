@@ -4,7 +4,7 @@ def interactive_menu
   @students = [] # an empty array accessible to all methods
   loop do
     print_menu
-    process(gets.chomp) # takes user input as argument
+    process(STDIN.gets.chomp) # takes user input as argument
   end 
 end
 
@@ -45,13 +45,25 @@ def save_students
   file.close
 end
 
-def load_students
-  file = File.open("students.csv", "r")
+def load_students(filename = "students.csv")
+  file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort, age = line.chomp.split(',')
     @students << {name: name, cohort: cohort.to_sym, age: age}
   end 
   file.close
+end
+
+def try_load_students
+  filename = ARGV.first # first argument from the command line
+  return if filename.nil? # get out of the method if it isn't given
+  if File.exists?(filename)
+    load_students(filename)
+    puts "Loaded #{@students.count} from #{filename}"
+  else #if it doesn't exist
+    puts "Sorry #{filename} doesn't exist"
+    exit # quit the programme
+  end
 end
 
 def show_students
@@ -66,7 +78,7 @@ def input_students
   answer = gets.chomp.upcase
   until answer != "Y"
     puts "Please enter the name of the student and then press enter."
-    name = gets.chomp.capitalize
+    name = STDIN.gets.chomp
     # if nothing entered name is set to unknown
       if name == ""
         name = "unknown"
@@ -117,4 +129,5 @@ def print_footer
   end
 end
 
+try_load_students
 interactive_menu
