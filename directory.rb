@@ -9,13 +9,15 @@ def input_students
     name = gets.chomp
     puts "Please enter their cohort"
     cohort = gets.chomp.downcase
+    # if nothing entered default cohort is set as May
       if cohort == ""
         cohort = :may
       end
     puts "How old are they?"
     age = gets.chomp
+    # if nothing entered age is set to unknown
       if age == ""
-        age = "99"
+        age = "unknown"
       end
     # add the student hash to the array
     students << {name: name, cohort: cohort.to_sym, age: age}
