@@ -1,9 +1,9 @@
 # array of students
-
 def input_students
   # create an empty array
   students = []
-  answer = "Y"
+  puts "Do you want to add a student to the directory? (Y/N)"
+  answer = gets.chomp.upcase
   until answer != "Y"
     puts "Please enter the name of the student and then press enter."
     name = gets.chomp
@@ -54,7 +54,7 @@ def print_by_cohort(students)
 end 
 
 def print_footer(students)
-    if students.count < 2
+    if students.count == 1
         puts "Overall we have #{students.count} great student"
     else
         puts "Overall we have #{students.count} great students"
@@ -62,12 +62,16 @@ def print_footer(students)
 end
 
 students = input_students
-puts "Would you like to print student list by index or by cohort group? (index/ cohort)"
-input = gets.chomp
-print_header
-  if input == "index"
-    print(students)
-  elsif input == "cohort"
-    print_by_cohort(students)
-  end
-print_footer(students)
+if students.count == 0
+  puts "There are no students enrolled at Villains Academy"
+else
+  puts "Would you like to print student list by index or by cohort group? (index/ cohort)"
+  input = gets.chomp
+  print_header
+    if input == "index"
+      print(students)
+    elsif input == "cohort"
+      print_by_cohort(students)
+    end
+  print_footer(students)
+end
