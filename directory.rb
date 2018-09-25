@@ -36,6 +36,21 @@ def print(students)
     students.each { |student| puts "#{student[:name].center(20)} (#{student[:cohort]} cohort)"}
 end 
 
+def print_by_cohort(students)
+  students_by_cohort = Hash.new 
+  students.map do |student|
+    if students_by_cohort[student[:cohort]] == nil
+      students_by_cohort[student[:cohort]] = [student[:name]]
+    else 
+      students_by_cohort[student[:cohort]].push(student[:name])
+    end
+  end
+  students_by_cohort.map do |key, value|
+    puts "#{key.upcase}"
+    value.map{|name| puts name}
+  end
+end 
+
 def print_footer(students)
     if students.count < 2
         puts "Overall we have #{students.count} great student"
@@ -45,6 +60,12 @@ def print_footer(students)
 end
 
 students = input_students
+puts "Would you like to print student list by index or by cohort group? (index/ cohort)"
+input = gets.chomp
 print_header
-print(students)
+  if input == "index"
+    print(students)
+  elsif input == "cohort"
+    print_by_cohort(students)
+  end
 print_footer(students)
