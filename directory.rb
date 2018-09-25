@@ -10,9 +10,10 @@ end
 
 def print_menu
   puts "1. Input the students"
-  puts "2. Show the students"
-  puts "3. Save the list of students to students.csv"
+  puts "2. Show students by index"
+  puts "3. Show students by cohort group"
   puts "4. Load the list of students from students.csv "
+  puts "5. Save the list of students to students.csv"
   puts "9. Exit"
 end
 
@@ -21,11 +22,13 @@ def process(selection)
     when "1"
       input_students
     when "2"
-      show_students
+      show_students_index
     when "3"
-      save_students
+      show_students_cohort
     when "4"
       load_students
+    when "5"
+      save_students
     when "9"
       exit
     else
@@ -43,6 +46,7 @@ def save_students
     file.puts csv_line
   end
   file.close
+  puts "You have saved the students to students.csv"
 end
 
 def load_students(filename = "students.csv")
@@ -52,6 +56,7 @@ def load_students(filename = "students.csv")
     @students << {name: name, cohort: cohort.to_sym, age: age}
   end 
   file.close
+  puts "You have loaded the student list from #{filename}"
 end
 
 def try_load_students
@@ -66,9 +71,15 @@ def try_load_students
   end
 end
 
-def show_students
+def show_students_index
   print_header
-  print_student_list
+  print_student_list_index
+  print_footer
+end
+
+def show_students_cohort
+  print_header
+  print_student_list_cohort
   print_footer
 end
 
@@ -113,9 +124,24 @@ def print_header
     puts "--------------------------------"
 end
 
-def print_student_list
+def print_student_list_index
   @students.each_with_index do |(student), index|    
     puts "#{index+1} #{student[:name].center(20)} (#{student[:cohort]} cohort)"
+  end
+end 
+
+def print_student_list_cohort
+  students_by_cohort = Hash.new 
+  @students.map do |student|
+    if students_by_cohort[student[:cohort]] == nil
+      students_by_cohort[student[:cohort]] = [student[:name]]
+    else 
+      students_by_cohort[student[:cohort]].push(student[:name])
+    end
+  end
+  students_by_cohort.map do |key, value|
+    puts "#{key.upcase}"
+    value.map{|name| puts name}
   end
 end 
 
