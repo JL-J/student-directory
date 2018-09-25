@@ -1,7 +1,6 @@
 # array of students
 
 def interactive_menu
-  @students = [] # an empty array accessible to all methods
   loop do
     print_menu
     process(STDIN.gets.chomp) # takes user input as argument
@@ -50,6 +49,7 @@ def save_students
 end
 
 def load_students(filename = "students.csv")
+  @students = [] # an empty array accessible to all methods
   file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort, age = line.chomp.split(',')
@@ -57,17 +57,20 @@ def load_students(filename = "students.csv")
   end 
   file.close
   puts "You have loaded the student list from #{filename}"
+  puts "There are currently #{@students.count} student(s) on this list"
 end
 
 def try_load_students
   filename = ARGV.first # first argument from the command line
-  return if filename.nil? # get out of the method if it isn't given
-  if File.exists?(filename)
+  if filename.nil? 
+    load_students
+  elsif File.exists?(filename) 
     load_students(filename)
-    puts "Loaded #{@students.count} from #{filename}"
+    puts "Loaded from #{filename}"
+    exit
   else #if it doesn't exist
     puts "Sorry #{filename} doesn't exist"
-    exit # quit the programme
+    load_students
   end
 end
 
