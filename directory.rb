@@ -49,7 +49,6 @@ def save_students
 end
 
 def load_students(filename = "students.csv")
-  @students = [] # an empty array accessible to all methods
   file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort, age = line.chomp.split(',')
@@ -61,13 +60,15 @@ def load_students(filename = "students.csv")
 end
 
 def try_load_students
+  @students = [] # an empty array accessible to all methods
   filename = ARGV.first # first argument from the command line
   if filename.nil? 
-    load_students
+    if File.exists?("students.csv") 
+      load_students
+    end  
   elsif File.exists?(filename) 
     load_students(filename)
     puts "Loaded from #{filename}"
-    exit
   else #if it doesn't exist
     puts "Sorry #{filename} doesn't exist"
     load_students
