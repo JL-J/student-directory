@@ -32,14 +32,14 @@ end
 
 def save_students
   # open file for writing
-  student_list = File.open("students.csv", "w")
+  file = File.open("students.csv", "w")
   # iterate over array 
   @students.each do |student|
     student_data = [student[:name], student[:cohort], student[:age]]
     csv_line = student_data.join(",")
-    student_list.puts csv_line
+    file.puts csv_line
   end
-  student_list.close
+  file.close
 end
 
 def show_students
