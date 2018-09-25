@@ -33,7 +33,9 @@ def print_header
 end
 
 def print(students)
-    students.each { |student| puts "#{student[:name].center(20)} (#{student[:cohort]} cohort)"}
+  students.each_with_index do |(student), index|    
+    puts "#{index+1} #{student[:name].center(20)} (#{student[:cohort]} cohort)"
+  end
 end 
 
 def print_by_cohort(students)
