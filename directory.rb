@@ -1,4 +1,26 @@
 # array of students
+
+def interactive_menu
+  students = []
+  loop do
+    puts "1. Input the students"
+    puts "2. Show the students"
+    puts "9. Exit"
+    selection = gets.chomp
+    case selection
+    when "1"
+        students = input_students
+    when "2"
+      print_header
+      print(students)
+      print_footer(students)
+    when "9"
+      exit
+    else
+      puts "I don't know what you mean, please try again"
+    end 
+  end 
+end
 def input_students
   # create an empty array
   students = []
@@ -33,47 +55,33 @@ def print_header
     puts "The students of Villains Academy"
     puts "--------------------------------"
 end
-
 def print(students)
   students.each_with_index do |(student), index|    
     puts "#{index+1} #{student[:name].center(20)} (#{student[:cohort]} cohort)"
   end
 end 
-
-def print_by_cohort(students)
-  students_by_cohort = Hash.new 
-  students.map do |student|
-    if students_by_cohort[student[:cohort]] == nil
-      students_by_cohort[student[:cohort]] = [student[:name]]
-    else 
-      students_by_cohort[student[:cohort]].push(student[:name])
-    end
-  end
-  students_by_cohort.map do |key, value|
-    puts "#{key.upcase}"
-    value.map{|name| puts name}
-  end
-end 
-
+#def print_by_cohort(students)
+#  students_by_cohort = Hash.new 
+#  students.map do |student|
+#    if students_by_cohort[student[:cohort]] == nil
+#      students_by_cohort[student[:cohort]] = [student[:name]]
+#    else 
+#      students_by_cohort[student[:cohort]].push(student[:name])
+#    end
+#  end
+#  students_by_cohort.map do |key, value|
+#    puts "#{key.upcase}"
+#    value.map{|name| puts name}
+#  end
+#end 
 def print_footer(students)
-    if students.count == 1
-        puts "Overall we have #{students.count} great student"
-    else
-        puts "Overall we have #{students.count} great students"
-    end
+  if students.count == 0
+    puts "There are no students enrolled at Villains Academy"
+  elsif students.count == 1
+    puts "Overall we have #{students.count} great student"
+  else
+    puts "Overall we have #{students.count} great students"
+  end
 end
 
-students = input_students
-if students.count == 0
-  puts "There are no students enrolled at Villains Academy"
-else
-  puts "Would you like to print student list by index or by cohort group? (index/ cohort)"
-  input = gets.chomp
-  print_header
-    if input == "index"
-      print(students)
-    elsif input == "cohort"
-      print_by_cohort(students)
-    end
-  print_footer(students)
-end
+interactive_menu
