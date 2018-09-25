@@ -3,10 +3,13 @@
 def interactive_menu
   students = []
   loop do
+    # prints the menu and asks the user what they want to do
     puts "1. Input the students"
     puts "2. Show the students"
     puts "9. Exit"
+    # read the input and saves it to a variable
     selection = gets.chomp
+    # do what the user has asked
     case selection
     when "1"
         students = input_students
