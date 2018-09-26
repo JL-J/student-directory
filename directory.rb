@@ -37,7 +37,7 @@ end
 
 def save_students
   print "Do you want to save to students.csv? (Y/N)"
-  answer = gets.chomp
+  answer = gets.chomp.upcase
   if answer == "N"
     print "Please write in the file you wish to save to:"
     filename = gets.chomp
@@ -45,7 +45,7 @@ def save_students
     filename = "students.csv"
   end
   # open file for writing
-  file = File.open("students.csv", "w")
+  file = File.open(filename, "w")
   # iterate over array 
   @students.each do |student|
     student_data = [student[:name], student[:cohort], student[:age]]
@@ -53,7 +53,7 @@ def save_students
     file.puts csv_line
   end
   file.close
-  puts "You have saved the students to students.csv"
+  puts "You have saved the students to #{filename}"
 end
 
 
