@@ -11,8 +11,8 @@ def print_menu
   puts "1. Input the students"
   puts "2. Show students by index"
   puts "3. Show students by cohort group"
-  puts "4. Load the list of students from students.csv "
-  puts "5. Save the list of students to students.csv"
+  puts "4. Load the list of students"
+  puts "5. Save the list of students"
   puts "9. Exit"
 end
 
@@ -36,6 +36,14 @@ def process(selection)
 end
 
 def save_students
+  print "Do you want to save to students.csv? (Y/N)"
+  answer = gets.chomp
+  if answer == "N"
+    print "Please write in the file you wish to save to:"
+    filename = gets.chomp
+  else 
+    filename = "students.csv"
+  end
   # open file for writing
   file = File.open("students.csv", "w")
   # iterate over array 
@@ -48,15 +56,24 @@ def save_students
   puts "You have saved the students to students.csv"
 end
 
+
 def push_to_students(name, cohort, age)
   @students << {name: name, cohort: cohort.to_sym, age: age}
 end
 
-def load_students(filename = "students.csv")
+def load_students
+  print "Do you want to load student data from a specific file? (Y/N)"
+  answer = gets.chomp.upcase
+  if answer == "Y"
+    print "Please write in the file you wish to save to:"
+    filename = gets.chomp
+  else 
+    filename = "students.csv"
+  end
   file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort, age = line.chomp.split(',')
-    push_to_students(name, cohort, age)
+    @students << {name: name, cohort: cohort.to_sym, age: age}
   end 
   file.close
   puts "You have loaded the student list from #{filename}"
