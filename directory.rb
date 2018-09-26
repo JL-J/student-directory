@@ -13,6 +13,7 @@ def print_menu
   puts "3. Show students by cohort group"
   puts "4. Load the list of students"
   puts "5. Save the list of students"
+  puts "8. File currently being executed"
   puts "9. Exit"
 end
 
@@ -28,6 +29,8 @@ def process(selection)
       load_students
     when "5"
       save_students
+    when "8"
+      file_being_executed
     when "9"
       exit
     else
@@ -62,7 +65,7 @@ def push_to_students(name, cohort, age)
 end
 
 def load_students
-  print "Do you want to load student data from a specific file? (Y/N)"
+  print "Do you want to load student data from file other than students.csv? (Y/N)"
   answer = gets.chomp.upcase
   if answer == "Y"
     print "Please write in the file you wish to save to:"
@@ -178,6 +181,10 @@ def print_footer
   else
     puts "Overall we have #{@students.count} great students"
   end
+end
+
+def file_being_executed
+  puts __FILE__
 end
 
 try_load_students
