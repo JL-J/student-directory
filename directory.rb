@@ -48,11 +48,15 @@ def save_students
   puts "You have saved the students to students.csv"
 end
 
+def push_to_students(name, cohort, age)
+  @students << {name: name, cohort: cohort.to_sym, age: age}
+end
+
 def load_students(filename = "students.csv")
   file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort, age = line.chomp.split(',')
-    @students << {name: name, cohort: cohort.to_sym, age: age}
+    push_to_students(name, cohort, age)
   end 
   file.close
   puts "You have loaded the student list from #{filename}"
@@ -111,7 +115,7 @@ def input_students
         age = "unknown"
       end
     # add the student hash to the array
-    @students << {name: name, cohort: cohort.to_sym, age: age}
+    push_to_students(name, cohort, age)
     if @students.count == 1
       puts "Now we have #{@students.count} student"
     else
