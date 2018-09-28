@@ -39,24 +39,16 @@ def process(selection)
 end
 
 def save_students
-  print "Do you want to save to students.csv? (Y/N)"
-  answer = gets.chomp.upcase
-  if answer == "N"
-    print "Please write in the file you wish to save to:"
-    filename = gets.chomp
-  else 
-    filename = "students.csv"
-  end
-  # open file for writing
-  file = File.open(filename, "w")
-  # iterate over array 
-  @students.each do |student|
+  filename("save to")
+  # File opens on loop and iterate over array 
+  File::open(@filename, "w") do |something|
+    @students.each do |student|
     student_data = [student[:name], student[:cohort], student[:age]]
     csv_line = student_data.join(",")
-    file.puts csv_line
+    something.puts csv_line
+    end
   end
-  file.close
-  puts "You have saved the students to #{filename}"
+  puts "You have saved the students to #{@filename}"
 end
 
 
@@ -65,36 +57,39 @@ def push_to_students(name, cohort, age)
 end
 
 def load_students
-  print "Do you want to load student data from file other than students.csv? (Y/N)"
-  answer = gets.chomp.upcase
-  if answer == "Y"
-    print "Please write in the file you wish to save to:"
-    filename = gets.chomp
-  else 
-    filename = "students.csv"
-  end
-  file = File.open(filename, "r")
-  file.readlines.each do |line|
+  filename("load from")
+  File::open(@filename, "r") do |something|
+    something.readlines.each do |line|
     name, cohort, age = line.chomp.split(',')
     @students << {name: name, cohort: cohort.to_sym, age: age}
+    end
   end 
-  file.close
-  puts "You have loaded the student list from #{filename}"
+  puts "You have loaded the student list from #{@filename}"
   puts "There are currently #{@students.count} student(s) on this list"
 end
 
 def try_load_students
   @students = [] # an empty array accessible to all methods
-  filename = ARGV.first # first argument from the command line
-  if filename.nil? 
-    if File.exists?("students.csv") 
+  @filename = ARGV.first # first argument from the command line
+  if @filename.nil? 
+    if File.exists?("students.csv")
+      @filename = "students.csv"
       load_students
+    else
+      puts "Please enter the name of the file you wish to load, or enter a name of a file you wish to create."
+      @filename = gets.chomp
+        if File.exist?(@filename)
+          load_students
+        else 
+           File.new(@filename, "r")
+          load_students
+        end
     end  
-  elsif File.exists?(filename) 
-    load_students(filename)
-    puts "Loaded from #{filename}"
+  elsif File.exists?(@filename) 
+    load_students(@filename)
+    puts "Loaded from #{@filename}"
   else #if it doesn't exist
-    puts "Sorry #{filename} doesn't exist"
+    puts "Sorry #{@filename} doesn't exist"
     load_students
   end
 end
@@ -185,6 +180,15 @@ end
 
 def file_being_executed
   puts __FILE__
+end
+
+def filename(action)
+  puts "The current file is #{@filename}. Do you want to #{action} this file? (Y/N)"
+  answer = gets.chomp.upcase
+  if answer == "N"
+    print "Please write the name of the file you wish to use:"
+    @filename = gets.chomp
+  end
 end
 
 try_load_students
