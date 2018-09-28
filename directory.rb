@@ -86,7 +86,7 @@ def try_load_students
         end
     end  
   elsif File.exists?(@filename) 
-    load_students(@filename)
+    load_students
     puts "Loaded from #{@filename}"
   else #if it doesn't exist
     puts "Sorry #{@filename} doesn't exist"
