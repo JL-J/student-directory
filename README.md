@@ -12,3 +12,7 @@ Practise writing Ruby code including methods, loops, opening/saving/loading file
 ``` shell 
 ruby directory.rb
 ```
+
+## Current issues ##
+- When loading the programme, if students.csv doesn't exisit it currently crashes. Need to fix line rb:84 so you can create a new file.
+- You can open two csv files at the same time. If possible, it would be helpful to have a warning before opening a second csv file. 
