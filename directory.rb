@@ -81,7 +81,7 @@ def try_load_students
         if File.exist?(@filename)
           load_students
         else 
-           File.new(@filename, "r")
+           File.new(@filename, "r") # not working currently
           load_students
         end
     end  
@@ -110,7 +110,11 @@ def input_students
   # create an empty array
   puts "Do you want to add a student to the directory? (Y/N)"
   answer = gets.chomp.upcase
-  until answer != "Y"
+  until (answer == "Y") || (answer == "N")
+    puts "I'm sorry I didn't understand. Do you want to add a student to the directory? (Y/N)"
+    answer = gets.chomp.upcase
+  end
+  while answer == "Y"
     puts "Please enter the name of the student and then press enter."
     name = STDIN.gets.chomp
     # if nothing entered name is set to unknown
