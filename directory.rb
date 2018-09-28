@@ -77,11 +77,11 @@ def try_load_students
       load_students
     else
       puts "Please enter the name of the file you wish to load, or enter a name of a file you wish to create."
-      @filename = gets.chomp
+      @filename = STDIN.gets.chomp
         if File.exist?(@filename)
           load_students
         else 
-           File.new(@filename, "r") # not working currently
+          File.new(@filename, "r") # not working currently
           load_students
         end
     end  
@@ -90,7 +90,7 @@ def try_load_students
     puts "Loaded from #{@filename}"
   else #if it doesn't exist
     puts "Sorry #{@filename} doesn't exist"
-    load_students
+    exit # quit the programme
   end
 end
 
@@ -109,10 +109,10 @@ end
 def input_students
   # create an empty array
   puts "Do you want to add a student to the directory? (Y/N)"
-  answer = gets.chomp.upcase
+  answer = STDIN.gets.chomp.upcase
   until (answer == "Y") || (answer == "N")
     puts "I'm sorry I didn't understand. Do you want to add a student to the directory? (Y/N)"
-    answer = gets.chomp.upcase
+    answer = STDIN.gets.chomp.upcase
   end
   while answer == "Y"
     puts "Please enter the name of the student and then press enter."
@@ -128,7 +128,7 @@ def input_students
         cohort = :may
       end
     puts "How old are they?"
-    age = gets.chomp
+    age = STDIN.gets.chomp
     # if nothing entered age is set to unknown
       if age == ""
         age = "unknown"
@@ -142,7 +142,7 @@ def input_students
     end
     # get another name from the user
     puts "Do you want to add another student? (Y/N)"
-    answer = gets.chomp.upcase
+    answer = STDIN.gets.chomp.upcase
   end
 end
 
@@ -188,10 +188,10 @@ end
 
 def filename(action)
   puts "The current file is #{@filename}. Do you want to #{action} this file? (Y/N)"
-  answer = gets.chomp.upcase
+  answer = STDIN.gets.chomp.upcase
   if answer == "N"
     print "Please write the name of the file you wish to use:"
-    @filename = gets.chomp
+    @filename = STDIN.gets.chomp
   end
 end
 
