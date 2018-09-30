@@ -57,7 +57,7 @@ def push_to_students(name, cohort, age)
 end
 
 def load_students
-  filename("load from")
+  # filename("load from") # check if you want to load from current file
   File::open(@filename, "r") do |something|
     something.readlines.each do |line|
     name, cohort, age = line.chomp.split(',')
@@ -74,15 +74,16 @@ def try_load_students
   if @filename.nil? 
     if File.exists?("students.csv")
       @filename = "students.csv"
-      load_students
+      filename("load from") # check want to load from the dafualt file
     else
       puts "Please enter the name of the file you wish to load, or enter a name of a file you wish to create."
       @filename = STDIN.gets.chomp
         if File.exist?(@filename)
           load_students
         else 
-          File.new(@filename, "r") # not working currently
-          load_students
+          File.new(@filename, "w+") # creating a new file
+          puts "#{@filename} file had been created"
+          print_footer
         end
     end  
   elsif File.exists?(@filename) 
@@ -189,9 +190,18 @@ end
 def filename(action)
   puts "The current file is #{@filename}. Do you want to #{action} this file? (Y/N)"
   answer = STDIN.gets.chomp.upcase
-  if answer == "N"
+  if answer == "Y"
+    load_students
+  else # answer == "N"
     print "Please write the name of the file you wish to use:"
     @filename = STDIN.gets.chomp
+    if File.exist?(@filename)
+      load_students
+    else 
+      File.new(@filename, "w+") 
+      puts "You have created the new file #{@filename}"
+      print_footer # Confirms there are no students enrolled
+    end
   end
 end
 
