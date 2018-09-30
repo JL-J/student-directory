@@ -81,8 +81,9 @@ def try_load_students
         if File.exist?(@filename)
           load_students
         else 
-          File.new(@filename, "r") # not working currently
-          load_students
+          File.new(@filename, "w+") # creates new file if it doesn't exist
+          puts "You have created the new file #{@filename}"
+          print_footer
         end
     end  
   elsif File.exists?(@filename) 
@@ -189,9 +190,19 @@ end
 def filename(action)
   puts "The current file is #{@filename}. Do you want to #{action} this file? (Y/N)"
   answer = STDIN.gets.chomp.upcase
+  until (answer == "Y") || (answer == "N")
+    puts "I'm sorry I didn't understand. Do you want to use the current file (#{@filename}) ? (Y/N)"
+    answer = STDIN.gets.chomp.upcase
+  end
   if answer == "N"
     print "Please write the name of the file you wish to use:"
     @filename = STDIN.gets.chomp
+    if File.exist?(@filename)
+      load_students
+    else 
+      File.new(@filename, "w+") # creates new file
+      puts "You have created the new file #{@filename}"
+    end
   end
 end
 
